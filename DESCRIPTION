@@ -1,0 +1,11 @@
+Package: personalityfacets
+Type: Package
+Title: Package for estimating population r-square change
+Version: 0.1
+Date: 2014-02-07
+Author: Jeromy Anglim <jkanglim@gmail.com>
+Maintainer: Jeromy Anglim <jkanglim@gmail.com>
+Description: Package for providing a bootstrap estimate of population r-square change
+Depends:
+    boot
+License: GPL-2
