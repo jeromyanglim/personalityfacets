@@ -20,21 +20,22 @@
 #' \item{set1, set2, data, iterations, ci}{copy of corresponding arguments}
 #' @export
 #' @examples
-#' bootstrap_r_square_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets)
-bootstrap_r_square_change <- function(data, dv, ivs1, ivs2, iterations=1000, ci=.95, method='ezekiel') {
+#' data(facets_data); data(facets_meta)
+#' bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets)
+bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000, ci=.95, method='ezekiel') {
     results <- list()
     bootstrapped_data <- lapply(seq(iterations), 
                                 function(X) data[sample(seq(nrow(data)), size=nrow(data), replace=TRUE), ])
     results$theta_hats <- sapply(bootstrapped_data, function(X) 
-        double_adjusted_r_square_change(X, dv, ivs1, ivs2, method=method))
-    results$sample_theta_hat <- adjusted_r_square_change(data, dv, ivs1, ivs2)
+        double_adjusted_r_squared_change(X, dv, ivs1, ivs2, method=method))
+    results$sample_theta_hat <- adjusted_r_squared_change(data, dv, ivs1, ivs2)
     results$ci_level <- ci
     results$ci_values <-  quantile(results$theta_hats, c((1-ci) / 2, 1 - (1-ci)/2))
     results$se <- sd(results$theta_hats)
     results$mean <- mean(results$theta_hats)
     results$adjusted_rsquare <- list(
-        ivs1=adjusted_r_square(summary(regression(dv, ivs=ivs1, data=data))$r.squared, nrow(data), length(ivs1), method=method),
-        ivs2=adjusted_r_square(summary(regression(dv, ivs=ivs2, data=data))$r.squared, nrow(data), length(ivs2), method=method)
+        ivs1=adjusted_r_squared(summary(regression(dv, ivs=ivs1, data=data))$r.squared, nrow(data), length(ivs1), method=method),
+        ivs2=adjusted_r_squared(summary(regression(dv, ivs=ivs2, data=data))$r.squared, nrow(data), length(ivs2), method=method)
     )
     results$variables <- list(ivs1=ivs1, ivs2=ivs2)
     results$method <- method

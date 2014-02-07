@@ -8,6 +8,7 @@
 #' @return same object as return if called using lm
 #' @export
 #' @examples
+#' data(facets_data); data(facets_meta)
 #' regression(facets_meta$swb[1], facets_meta$ipip_factors, facets_data)
 regression <- function(dv, ivs, data) {
     # run a linear model with text arguments for dv and ivs

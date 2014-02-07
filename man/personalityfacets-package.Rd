@@ -2,10 +2,10 @@
 \name{personalityfacets-package}
 \alias{personalityfacets}
 \alias{personalityfacets-package}
-\title{A package for bootstrapping differences between mean correlations}
+\title{A package for obtaining bootstrap estimates of confidence intervals on population r-square change}
 \description{
-  This is currently just a test package that I'm using to
-  learn about package development
+  Package performs double adjuste rsquare bootstrap on
+  r-square change.
 }
 \author{
   Jeromy Anglim

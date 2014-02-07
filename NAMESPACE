@@ -1,3 +1,4 @@
-export(adjusted_r_square)
-export(bootstrap_r_square_change)
+export(adjusted_r_squared)
+export(bootstrap_r_squared_change)
+export(lm_adjusted_r_squared)
 export(regression)

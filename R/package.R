@@ -1,6 +1,6 @@
-#' A package for bootstrapping differences between mean correlations
+#' A package for obtaining bootstrap estimates of confidence intervals on population r-square change
 #' 
-#' This is currently just a test package that I'm using to learn about package development
+#' Package performs double adjuste rsquare bootstrap on r-square change.
 #' @docType package
 #' @name personalityfacets-package
 #' @aliases personalityfacets

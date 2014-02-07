@@ -19,6 +19,7 @@
   predictors as character strings
 }
 \examples{
+data(facets_data); data(facets_meta)
 regression(facets_meta$swb[1], facets_meta$ipip_factors, facets_data)
 }
 

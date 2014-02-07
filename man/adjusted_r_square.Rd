@@ -5,7 +5,8 @@
   adjusted_r_square(rsquared, n, p, method = "ezekiel")
 }
 \arguments{
-  \item{rsquared}{}
+  \item{rsquared}{value of r-squared from a regression
+  model}
 
   \item{n}{sample size}
 
@@ -21,7 +22,7 @@
   Calculates adjusted r square
 }
 \examples{
-rs <- summary(regression('swl', ivs= facets_meta$ipip_factors, data=facets_data))$r.squared
+rs <- summary(regression('swl', ivs=facets_meta$ipip_factors, data=facets_data))$r.squared
 n <- nrow(facets_data)
 p <- length(facets_meta$ipip_factors)
 adjusted_r_square(rs, n, p, method='ezekiel')
