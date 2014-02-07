@@ -3,7 +3,7 @@
 \title{Bootstrap estimate of popualtion r-square of difference between facets and factors}
 \usage{
   bootstrap_r_square_change(data, dv, ivs1, ivs2,
-    iterations = 1000, ci = 0.95)
+    iterations = 1000, ci = 0.95, method = "ezekiel")
 }
 \arguments{
   \item{data}{data.frame}
@@ -21,8 +21,11 @@
   bootstrap iterations to run}
 
   \item{ci}{number between 0 and 1 indicating size of
-  bootstrap confidence interval. Default value is .95
-  representing a 95\% confidence interval.}
+  bootstrap confidence interval.}
+
+  \item{method}{One of the 'ezekiel' or 'olkinpratt'
+  Default value is .95 representing a 95\% confidence
+  interval.}
 }
 \value{
   an object of class boot_mean_cor_diff
