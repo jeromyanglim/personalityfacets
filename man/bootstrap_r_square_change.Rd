@@ -23,7 +23,7 @@
   \item{ci}{number between 0 and 1 indicating size of
   bootstrap confidence interval.}
 
-  \item{method}{One of the 'ezekiel' or 'olkinpratt'
+  \item{method}{one of the 'ezekiel' or 'olkinpratt'
   Default value is .95 representing a 95\% confidence
   interval.}
 }

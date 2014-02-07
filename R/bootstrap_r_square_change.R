@@ -8,7 +8,7 @@
 #' @param ivs2 character vector of names in data.frame typically corresponding to personality facets
 #' @param iterations positive number indicating number of bootstrap iterations to run
 #' @param ci number between 0 and 1 indicating size of bootstrap confidence interval. 
-#' @param method One of the 'ezekiel' or 'olkinpratt'
+#' @param method one of the 'ezekiel' or 'olkinpratt'
 #' Default value is .95 representing a 95\% confidence interval. 
 #' @return 
 #' an object of class boot_mean_cor_diff

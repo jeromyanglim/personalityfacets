@@ -1,0 +1,24 @@
+\name{regression}
+\alias{regression}
+\title{lm regression using character strings}
+\usage{
+  regression(dv, ivs, data)
+}
+\arguments{
+  \item{dv}{character scale of variable name in data}
+
+  \item{ivs}{character vector of variable names in data}
+
+  \item{data}{data.frame}
+}
+\value{
+  same object as return if called using lm
+}
+\description{
+  Call lm function by supply dependent variable and
+  predictors as character strings
+}
+\examples{
+regression(facets_meta$swb[1], facets_meta$ipip_factors, facets_data)
+}
+

@@ -7,16 +7,7 @@ adjusted_r_square_change <- function(data, dv, ivs1, ivs2) {
     # c(ars_facets, ars_factors, ars_facets - ars_factors)
 }
 
-adjusted_r_square <- function(rsquare, n, p, method='ezekiel') {
-    if (method=='ezekiel') {
-        return( 
-            1 - (1-rsquare)  * ((n-1)/(n-p-1))
-            )
-    }
-    if (method=='olkinpratt') {
-        1 - ((n-3)/(n-p-1)) * (1-rsquare) * phyper(1, 1, (n-p + 1)/2, 1-rsquare)
-    }
-}
+
 
 double_adjusted_r_square_change <- function(data, dv, ivs1, ivs2, method='ezekiel') {
     fit1 <- regression(dv, ivs1, data)

@@ -1,1 +1,3 @@
+export(adjusted_r_square)
 export(bootstrap_r_square_change)
+export(regression)
