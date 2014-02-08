@@ -1,17 +1,23 @@
 #' @title Calculate adjusted r square
 #' 
 #' @description Calculates adjusted r square using various methods. 
-#' ezekiel is the formula typically used in statistics packages (e.g., adj.r.squared in summary.lm).
-#' olkinpratt is useful if you are drawing inference to a situation where the predictors are assumed to be random, 
-#' whereas ezekiel makes sense where 
+#' \code{ezekiel} is the formula typically used in statistics packages (e.g., adj.r.squared in summary.lm).
+#' One recommendation is to use \code{olkinpratt} when the predictors are assumed to be random and \code{ezekiel} when predictors are assumed to be fixed.
+#' All included formulas are designed to estimate population \eqn{\rho^2} r-squared rather
 #' 
 #' @param rsquared value of r-squared from a regression model
 #' @param n sample size
 #' @param p number of predictors
-#' @param method for calculating r-squared (currently takes 'ezekiel' or 'olkinpratt')
+#' @param method character string indicating the method for calculating r-squared. One of "\code{ezekiel}" (default) 
+#' "\code{olkinpratt}", "\code{pratt}",  "\code{wherry1}", and "\code{wherry2}"
+#'  
 #' @references Raju, N. S., Bilgic, R., Edwards, J. E., & Fleer, P. F. (1997). 
 #' Methodology review: Estimation of population validity and cross-validity, and the 
 #' use of equal weights in prediction. Applied Psychological Measurement, 21(4), 291-305.
+#' 
+#' Yin, P., & Fan, X. (2001). Estimating R2 shrinkage in multiple regression: 
+#' A comparison of different analytical methods. The Journal of Experimental Education, 69(2), 203-224.
+#' 
 #' See also: \url{http://stats.stackexchange.com/a/63766/183}
 #' @export
 #' @examples
@@ -19,27 +25,37 @@
 #' rs <- summary(regression('swl', ivs=facets_meta$ipip_factors, data=facets_data))$r.squared
 #' n <- nrow(facets_data)
 #' p <- length(facets_meta$ipip_factors)
+#' 
 #' adjusted_r_squared(rs, n, p, method='ezekiel')
 #' adjusted_r_squared(rs, n, p, method='olkinpratt')
-adjusted_r_squared <- function(rsquared, n, p, method='ezekiel') {
+#' adjusted_r_squared(rs, n, p, method='pratt')
+#' adjusted_r_squared(rs, n, p, method='wherry1')
+#' adjusted_r_squared(rs, n, p, method='wherry2')
+adjusted_r_squared <- function(rsquared, n, p, 
+    method=c("ezekiel", "smith", "olkinpratt",  
+             "pratt", "wherry1", "wherry2")) {
+    method <- match.arg(method)
+    
     if (method %in% c('ezekiel', 'smith')) {
-        return( 
-            1 - (1-rsquared)  * ((n-1)/(n-p-1))
-        )
+        result <- 1 - (1-rsquared)  * ((n-1)/(n-p-1))
     }
     if (method=='olkinpratt') {
-        return(
-        1 - ((n-3)/(n-p-1)) * (1-rsquared) * phyper(1, 1, (n-p + 1)/2, 1-rsquared)
-        )
+        result <- 1 - ((n-3)/(n-p-1)) * (1-rsquared) * phyper(1, 1, (n-p + 1)/2, 1-rsquared)
     }
     
     if (method=='pratt') {
         part1 <- ((n - 3) * (1- rsquared)) / (n - p - 1)
         part2 <- 1 + (2 * (1 - rsquared))/ (n - p - 2.3)
-        return(
-            1 - part1 * part2
-        )
+        result <- 1 - part1 * part2
     }
+    if (method=='wherry1') {
+        result <- 1 - (n-1)/(n-p-1)*(1-rsquared)
+    }
+    if (method=='wherry2') {
+        result <- 1 - (n-1)/(n-p)*(1-rsquared)
+    }
+    result
+    
 }
 
 #' @title Calculate adjusted r squared

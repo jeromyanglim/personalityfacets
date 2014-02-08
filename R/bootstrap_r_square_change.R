@@ -39,5 +39,6 @@ bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000, ci
     )
     results$variables <- list(ivs1=ivs1, ivs2=ivs2)
     results$method <- method
+    class(results) <- "bootstrap_r_squared_change"
     results
 }
