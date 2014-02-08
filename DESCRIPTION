@@ -7,5 +7,6 @@ Author: Jeromy Anglim <jkanglim@gmail.com>
 Maintainer: Jeromy Anglim <jkanglim@gmail.com>
 Description: Package for providing a bootstrap estimate of population r-square change
 Depends:
-    boot
+    boot,
+    bootstrap
 License: GPL-2

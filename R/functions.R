@@ -13,24 +13,7 @@ pratt_adjusted_rsquare <- function(lmfit) {
 
 specify_decimal <- function(x, k) format(round(x, k), nsmall=k)
 
-k_fold_rsq <- function(lmfit, ngroup=10) {
-    # assumes library(bootstrap)
-    # adapted from http://www.statmethods.net/stats/regression.html
-    mydata <- lmfit$model
-    outcome <- names(lmfit$model)[1]
-    predictors <- names(lmfit$model)[-1]
-    
-    theta.fit <- function(x,y){lsfit(x,y)}
-    theta.predict <- function(fit,x){cbind(1,x)%*%fit$coef} 
-    X <- as.matrix(mydata[predictors])
-    y <- as.matrix(mydata[outcome]) 
-    
-    results <- crossval(X,y,theta.fit,theta.predict,ngroup=ngroup)
-    raw_rsq <- cor(y, lmfit$fitted.values)**2 # raw R2 
-    cv_rsq <- cor(y,results$cv.fit)**2 # cross-validated R2
-    
-    c(raw_rsq=raw_rsq, cv_rsq=cv_rsq)
-}
+
 
 
 
@@ -151,30 +134,3 @@ stepwise_formula <- function(dv, ivs, data, alpha.to.enter=.05, alpha.to.leave=.
 
 
 
-stepwise_regression <- function(dv, ivs, data, alpha_in=.05) {
-    f <- paste(dv, '~', 1)
-    included_ivs <- NULL
-    excluded_ivs <- ivs
-    fit <- lm(formula(f), data)
-    
-    for ( i in seq(ivs) ) {
-        semi_r_sq <- cor(resid(fit), data[,excluded_ivs])^2
-        semi_r_sq <- as.vector(semi_r_sq)
-        test_iv <- excluded_ivs[which.max(semi_r_sq)]
-        f_test <- paste(f, '+', test_iv)
-        fit_test <- lm(formula(f_test), data)
-        test_p <- summary(fit_test)$coefficients[test_iv, 'Pr(>|t|)']
-        is_sig <- test_p < alpha_in
-        if (is_sig) {
-            f <- f_test
-            fit <- fit_test
-            included_ivs <- c(included_ivs, test_iv)
-            excluded_ivs <- setdiff(excluded_ivs, test_iv)
-        } else {
-            break
-        }
-    }
-    fit$included_ivs <- included_ivs
-    
-    return(fit)
-}
