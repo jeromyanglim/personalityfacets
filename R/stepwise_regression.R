@@ -48,3 +48,6 @@ stepwise_regression <- function(dv, ivs, data, alpha_in=.05) {
     
     return(fit)
 }
+
+
+
