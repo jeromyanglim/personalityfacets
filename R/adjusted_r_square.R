@@ -31,6 +31,10 @@
 #' adjusted_r_squared(rs, n, p, method='pratt')
 #' adjusted_r_squared(rs, n, p, method='wherry1')
 #' adjusted_r_squared(rs, n, p, method='wherry2')
+#' 
+#' adjusted_r_squared(.2, 100, 1)
+#' adjusted_r_squared(.2, 100, 5)
+#' adjusted_r_squared(.2, 100, 10)
 adjusted_r_squared <- function(rsquared, n, p, 
     method=c("ezekiel", "smith", "olkinpratt",  
              "pratt", "wherry1", "wherry2")) {
@@ -60,10 +64,11 @@ adjusted_r_squared <- function(rsquared, n, p,
 
 #' @title Calculate adjusted r squared
 #' 
-#' @description Calculates adjusted r squared
+#' @description This function is an alternative way of calling \link{adjusted_r_squared}. It derives
+#' \code{n}, \code{p}, and \code{rsquared} from an \code{lm} object. 
 #' 
 #' @param fit object of class lm
-#' @param method for calculating r-squared (currently takes 'ezekiel' or 'olkinpratt')
+#' @param method for calculating r-squared (see \link{adjusted_r_squared})
 #' @return adjusted r-squared
 #' @export
 #' @examples
