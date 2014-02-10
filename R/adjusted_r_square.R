@@ -75,7 +75,10 @@ adjusted_r_squared <- function(rsquared, n, p,
 #' data(facets_data); data(facets_meta)
 #' fit <- regression('swl', ivs= facets_meta$ipip_factors, data=facets_data)
 #' lm_adjusted_r_squared(fit, method='olkinpratt')
-lm_adjusted_r_squared <- function(fit, method) {
+lm_adjusted_r_squared <- function(fit, 
+    method=c("ezekiel", "smith", "olkinpratt",  
+             "pratt", "wherry1", "wherry2")){
+    method <- match.arg(method)
     rsquared <- summary(fit)$r.squared
     n <- length(fit$residuals)
     # minus 1 to remove the intercept

@@ -1,3 +1,4 @@
+S3method(print,bootstrap_r_squared_change)
 export(adjusted_r_squared)
 export(bootstrap_r_squared_change)
 export(facets_semi_partial_r_table)

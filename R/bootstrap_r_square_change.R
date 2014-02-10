@@ -8,16 +8,16 @@
 #' @param ivs2 character vector of variable names in \code{data} typically corresponding to personality facets
 #' @param iterations positive number indicating number of bootstrap iterations to run
 #' @param ci number between 0 and 1 indicating size of bootstrap confidence interval. 
-#' @param method See \code{method} argument for \link{adjusted_r_squared} function. 
 #' Default value is .95 representing a 95\% confidence interval. 
+#' @param method See \code{method} argument for \link{adjusted_r_squared} function. 
+#' Default value is \code{olkinpratt} which is designed where inference is desired to the situation
+#' where the predictor variables are assumed to be random.
+#' 
 #' @return 
 #' an object of class boot_mean_cor_diff
-#' \item{boot_results}{object of class boot resulting from bootstrapping analysis}
-#' \item{cor_matrix1}{numeric matrix: correlation matrix between set1 variables}
-#' \item{cor_matrix2}{numeric matrix: correlation matrix between set2 variables}
-#' \item{mean_cor1}{numeric scalar: average correlation between set1 variables}
-#' \item{mean_cor2}{numeric scalar: average correlation between set2 variables}
-#' \item{set1, set2, data, iterations, ci, method}{copy of corresponding arguments}
+#' 
+#' 
+#' \item{variables, data, iterations, ci, method}{copy of corresponding arguments}
 #' @export
 #' @details
 #' Population r-square change is defined as
@@ -30,25 +30,24 @@
 #' A rough guide to number of iterations: 100 for basic error checking; 1,000 for exploratory analyses; 
 #' 10,000 minimum recommended for publication; 100,000+ preferable for publication where computing power allows.
 #' 
-#' 
 #' @examples
 #' data(facets_data); data(facets_meta)
-#' bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets)
-bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000, ci=.95, method='ezekiel') {
+#' # using 100 iterations is too few, but is used here to make example run quickly
+#' bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=100)
+bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000, ci=.95, method='olkinpratt') {
     results <- list()
-    bootstrapped_data <- lapply(seq(iterations), 
-                                function(X) data[ sample(seq(nrow(data)), size=nrow(data), replace=TRUE), ])
-    
-    # sapply_pb is a wrapper for sapply that provides a progress bar
-    results$theta_hats <- sapply_pb(bootstrapped_data, function(X) 
-        double_adjusted_r_squared_change(X, dv, ivs1, ivs2, method=method))
+    results$data <- data[,c(ivs1, ivs2, dv)]
+    results$theta_hats <- sapply_pb(seq(iterations), function(X) 
+        double_adjusted_r_squared_change(
+            data[ sample(seq(nrow(data)), size=nrow(data), replace=TRUE), ], 
+            dv, ivs1, ivs2, method=method))
     results$bootstrap_standard_error <- sd(results$theta_hats)/sqrt(iterations)
     results$sample_theta_hat <- adjusted_r_squared_change(data, dv, ivs1, ivs2)
     results$ci_level <- ci
     results$ci_values <-  quantile(results$theta_hats, c((1-ci) / 2, 1 - (1-ci)/2))
     results$se <- sd(results$theta_hats)
     results$mean <- mean(results$theta_hats)
-    results$adjusted_rsquare <- list(
+    results$adjusted_rsquared <- list(
         ivs1=adjusted_r_squared(summary(regression(dv, ivs=ivs1, data=data))$r.squared, 
                                 nrow(data), length(ivs1), method=method),
         ivs2=adjusted_r_squared(summary(regression(dv, ivs=ivs2, data=data))$r.squared, 
@@ -56,6 +55,7 @@ bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000, ci
     )
     results$variables <- list(ivs1=ivs1, ivs2=ivs2)
     results$method <- method
+    results$iterations <- iterations
     class(results) <- "bootstrap_r_squared_change"
     results
 }
@@ -78,4 +78,47 @@ sapply_pb <- function(X, FUN, ...)
     res <- sapply(X, wrapper, ...)
     close(pb)
     res
+}
+
+
+#' @title Print output for bootstrap_r_squared_change object
+#' 
+#' @description Print output including descriptive statistics and bootstrap results
+#' 
+#' @param x object of class boot_mean_cor_diff
+#' @param digits positive intenger: number of decimal points to display. Numbers are passed to round(x, digits)
+#' @param ... further arguments passed to or from other methods (not currently used)
+#' @method print bootstrap_r_squared_change
+#' @export 
+#' @examples
+#' data(facets_data); data(facets_meta)
+#' # using 100 iterations is too few, but is used here to make example run quickly
+#' fit <- bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=100)
+#' print(fit, verbose=TRUE)
+print.bootstrap_r_squared_change <- function(x, digits=3, ...) {
+    cat('\nBOOTSTRAP ESTIMATE OF POPULATION R-SQUARED CHANGE\n')
+    
+    cat('\nDESCRIPTION')
+    cat('\nVariables - ivs1:', x$variables$ivs1,'\n')
+    cat('\nVariables - ivs2:', x$variables$ivs2, '\n')
+    
+    cat('\nn =', nrow(x$data))
+    cat('\nAdjusted r-squared method:', x$method)
+    cat('\nBootstrap iterations:', x$iterations)
+    cat('\nBootstrap standard error:', x$bootstrap_standard_error)
+    
+    cat('\nEstimated Population R-squared:\n')
+    cat('ivs1:', round(x$adjusted_rsquared$ivs1, digits),'\n')
+    cat('ivs2:', round(x$adjusted_rsquared$ivs2, digits),'\n')
+    
+    cat('\nEstimated Population R-squared Change(ivs2 - ivs1):\n')
+    cat('Sample estimate:', round(x$sample_theta_hat, digits), '\n')
+    cat('Mean of bootstrapped estimates :', round(x$mean, digits), '\n')
+    
+    cat('\nBootstrap Confidence Interval:', x$ci_level, '\n')
+    cat("Confidence interval:", "(",
+        paste(round( x$ci_values, digits=digits), collapse=" - "),
+        ")", '\n')
+    cat("Standard error:", round( x$se, digits=digits), '\n')
+    
 }
