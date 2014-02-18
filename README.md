@@ -1,9 +1,9 @@
 `personalityfacets` is an R package which provides various functions for examining the relationship between personality facets, factors, and criteria.
 
 ### Installation:
-As an R package, naturally you need [R installed](http://www.r-project.org/).
+As an R package, naturally you need to have [installed R](http://www.r-project.org/).
 
-If necessary, install dependencies:
+If they are not already installed, install the package dependencies:
 
     install.packages('boot')
     install.packages('bootstrap')
@@ -23,7 +23,6 @@ Once installed run the following command to load the package
 Enter the following command to see an introduction to the main functions.
 
     ?personalityfacets
-
 
 ### Author
 Jeromy Anglim
