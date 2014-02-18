@@ -1,0 +1,27 @@
+\name{print.bootstrap_r_squared_change}
+\alias{print.bootstrap_r_squared_change}
+\title{Print output for bootstrap_r_squared_change object}
+\usage{
+  \method{print}{bootstrap_r_squared_change} (x,
+    digits = 3, ...)
+}
+\arguments{
+  \item{x}{object of class boot_mean_cor_diff}
+
+  \item{digits}{positive intenger: number of decimal points
+  to display. Numbers are passed to round(x, digits)}
+
+  \item{...}{further arguments passed to or from other
+  methods (not currently used)}
+}
+\description{
+  Print output including descriptive statistics and
+  bootstrap results
+}
+\examples{
+data(facets_data); data(facets_meta)
+# using 100 iterations is too few, but is used here to make example run quickly
+fit <- bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=100)
+print(fit, verbose=TRUE)
+}
+

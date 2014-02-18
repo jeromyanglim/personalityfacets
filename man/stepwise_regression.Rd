@@ -1,0 +1,43 @@
+\name{stepwise_regression}
+\alias{stepwise_regression}
+\title{Forward entry stepwise regression}
+\usage{
+  stepwise_regression(dv, ivs, data, alpha_in = 0.05)
+}
+\arguments{
+  \item{dv}{character string representing name of dependent
+  variable in \code{data}}
+
+  \item{ivs}{character vector representing predictor
+  variables in \code{data}}
+
+  \item{data}{data.frame}
+
+  \item{alpha_in}{maximum p-value permitted of r-square
+  change of non-included predictor to allow inclusion of
+  predictor}
+}
+\value{
+  The model fit of class \code{lm} returned from the final
+  model. The order of predictors corresponds to the order
+  that they entered the model.
+}
+\description{
+  This function performs forward entry stepwise regression.
+}
+\details{
+  The model starts with no predictors and determines which
+  remaining predictor (which on the first iteration is all
+  predictors) has the largest squared semi-partial
+  correlation. If this predictor has a p-value less than
+  \code{alpha_in} (e.g., .05) then the predictor is
+  retained. If it is not significant, then the stepwise
+  procedure ends and the model is returned. If it is
+  significant, thent the procedure is iterated again until
+  either there are no more excluded predictors.
+}
+\examples{
+data(facets_data); data(facets_meta)
+stepwise_regression('swl', facets_meta$ipip_facets, facets_data, .05)
+}
+

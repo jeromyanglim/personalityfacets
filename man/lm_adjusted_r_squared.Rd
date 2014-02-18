@@ -1,0 +1,27 @@
+\name{lm_adjusted_r_squared}
+\alias{lm_adjusted_r_squared}
+\title{Calculate adjusted r squared}
+\usage{
+  lm_adjusted_r_squared(fit,
+    method = c("ezekiel", "smith", "olkinpratt", "pratt", "wherry1", "wherry2"))
+}
+\arguments{
+  \item{fit}{object of class lm}
+
+  \item{method}{for calculating r-squared (see
+  \link{adjusted_r_squared})}
+}
+\value{
+  adjusted r-squared
+}
+\description{
+  This function is an alternative way of calling
+  \link{adjusted_r_squared}. It derives \code{n}, \code{p},
+  and \code{rsquared} from an \code{lm} object.
+}
+\examples{
+data(facets_data); data(facets_meta)
+fit <- regression('swl', ivs= facets_meta$ipip_factors, data=facets_data)
+lm_adjusted_r_squared(fit, method='olkinpratt')
+}
+
