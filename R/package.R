@@ -8,7 +8,7 @@
 #' 
 #' \link{bootstrap_r_squared_change} can be used to obtain bootstrap confidence intervals on the
 #' population r-square change. There are also various supporting functions. \link{regression} 
-#' is a convient way of calling a regression with many predictors. \link{adjustd_r_squared} 
+#' is a convient way of calling a regression with many predictors. \link{adjusted_r_squared} 
 #' and \link{lm_adjusted_r_squared}
 #' provides several options for obtaining adjusted r-squared.
 #' 

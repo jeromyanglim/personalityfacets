@@ -36,10 +36,11 @@
 #' bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=100)
 bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000, ci=.95, method='olkinpratt') {
     results <- list()
-    results$data <- data[,c(ivs1, ivs2, dv)]
+    data <- data[,c(ivs1, ivs2, dv)]
+    results$data <- data
     results$theta_hats <- sapply_pb(seq(iterations), function(X) 
         double_adjusted_r_squared_change(
-            data[ sample(seq(nrow(data)), size=nrow(data), replace=TRUE), ], 
+            data[ sample(seq(nrow(results$data)), size=nrow(data), replace=TRUE), ], 
             dv, ivs1, ivs2, method=method))
     results$bootstrap_standard_error <- sd(results$theta_hats)/sqrt(iterations)
     results$sample_theta_hat <- adjusted_r_squared_change(data, dv, ivs1, ivs2)
@@ -79,6 +80,7 @@ sapply_pb <- function(X, FUN, ...)
     close(pb)
     res
 }
+
 
 
 #' @title Print output for bootstrap_r_squared_change object

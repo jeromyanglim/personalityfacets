@@ -8,5 +8,6 @@ Maintainer: Jeromy Anglim <jkanglim@gmail.com>
 Description: Package for providing a bootstrap estimate of population r-square change
 Depends:
     boot,
-    bootstrap
+    bootstrap,
+    hypergeo
 License: GPL-2

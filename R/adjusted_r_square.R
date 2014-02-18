@@ -44,7 +44,10 @@ adjusted_r_squared <- function(rsquared, n, p,
         result <- 1 - (1-rsquared)  * ((n-1)/(n-p-1))
     }
     if (method=='olkinpratt') {
-        result <- 1 - ((n-3)/(n-p-1)) * (1-rsquared) * phyper(1, 1, (n-p + 1)/2, 1-rsquared)
+        # hypergeo from hypergeo package
+        # computes hypergeometric function 
+        multiple <- as.numeric(hypergeo(1,1, (n-p+1)/2, 1-rsquared))
+        result <- 1 - ((n-3)/(n-p-1)) * (1-rsquared) * multiple
     }
     
     if (method=='pratt') {
