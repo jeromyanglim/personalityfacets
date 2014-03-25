@@ -31,15 +31,17 @@ facets_semi_partial_r_table <- function(dv, facets, factors, data) {
     if ( length(facets) != length(factors)) {
         stop("The length of facet variables should be the same as the length of factors")
     }
-
+    
     all_correlations <- function(facet, focal_factor) {
         results <- list()
-        results$r_zero_order <- as.vector(cor(data[,dv], data[,facet])[1,1])
-        results$sr_focal_factor <- as.vector(semi_partial_r(dv, facet, focal_factor, data)[1,1])
-        results$sr_all_factors <- as.vector( semi_partial_r(dv, facet, factors, data)[1,1])
-        results$sr_other_facets <- as.vector(semi_partial_r(dv, facet, setdiff(facets, facet),data)[1,1])
+        results$r_zero_order <- cor(as.vector(data[,dv]), as.vector(data[,facet]))
+        results$sr_focal_factor <- semi_partial_r(dv, facet, focal_factor, data)
+        results$sr_all_factors <- semi_partial_r(dv, facet, factors, data)
+        results$sr_other_facets <- semi_partial_r(dv, facet, setdiff(facets, facet),data)
         unlist(results)
     }
+
+    all_correlations(facets[1], factors[1])
     
     allsemi <- t(sapply(seq(facets), function(i)  all_correlations(facets[i], factors[i])))
     allsemi <- data.frame(allsemi)

@@ -15,5 +15,5 @@ semi_partial_r <- function(y, x, controls, data) {
     Formula <- formula(paste(x, '~',  paste(controls, collapse=" + ")))
     lm_x <- lm(Formula, data=data)
     resid_x <- resid(lm_x)
-    cor(resid_x, data[,y])
+    cor(resid_x, as.vector(data[,y]))
 }
