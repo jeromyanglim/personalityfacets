@@ -46,7 +46,8 @@ adjusted_r_squared <- function(rsquared, n, p,
     if (method=='olkinpratt') {
         # hypergeo from hypergeo package
         # computes hypergeometric function 
-        multiple <- as.numeric(hypergeo(1,1, (n-p+1)/2, 1-rsquared))
+        multiple <- as.numeric(hypergeo(1,1, round((n-p+1)/2), 1-rsquared)) # note: round seems to be required as
+                                                                            # hypergeo gives strange results with numbers ending in .5
         result <- 1 - ((n-3)/(n-p-1)) * (1-rsquared) * multiple
     }
     
