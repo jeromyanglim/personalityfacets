@@ -1,6 +1,6 @@
 #' @title Bootstrap estimate of popualtion r-square of difference between facets and factors
 #' 
-#' @description The function provides a bootstrapped estimate with confidence intervals of of population r-squared change. 
+#' @description The function provides a bootstrapped estimate with confidence intervals of population r-squared change. 
 #' 
 #' @param data data.frame
 #' @param dv character scalar with name of dependent variable
@@ -22,18 +22,19 @@
 #' @details
 #' Population r-square change is defined as
 #' \deqn{\Delta\rho^2 = \rho^2_{ivs2} - \rho^2_{ivs1}}
-#' Bootstrapping involves performing applying the formula for adjusted r-square twice, 
-#' once to remove the bootstrap bias, and a second time to remove the bias inherent to the r-square formula.
-#' There are several methods available (See \code{method} argument for \link{adjusted_r_squared} function). 
+#' The Bootstrapping procedure applies the formula for adjusted r-squared twice, 
+#' once to remove the bootstrap bias, and a second time to remove the bias inherent to the r-squared formula.
+#' There are several methods available (See \code{method} argument for the \link{adjusted_r_squared} function). 
 #' However, in general if you assume that the predictors are random then \code{olkinpratt} is a good option.
-#' If you assume that the predictors are fixed, then \code{ezekiel} is a good option.
+#' If you assume that the predictors are fixed, then \code{ezekiel} is a good option. 
+#' However, generally the results are fairly similar for the two methods
 #' A rough guide to number of iterations: 100 for basic error checking; 1,000 for exploratory analyses; 
-#' 10,000 minimum recommended for publication; 100,000+ preferable for publication where computing power allows.
+#' 10,000 is recommended for publication.
 #' 
 #' @examples
 #' data(facets_data); data(facets_meta)
-#' # using 100 iterations is too few, but is used here to make example run quickly
-#' bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=100)
+#' # using 50 iterations is too few, but is used here to make example run quickly
+#' bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=50)
 bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000, ci=.95, method='olkinpratt') {
     results <- list()
     data <- data[,c(ivs1, ivs2, dv)]
@@ -87,15 +88,15 @@ sapply_pb <- function(X, FUN, ...)
 #' 
 #' @description Print output including descriptive statistics and bootstrap results
 #' 
-#' @param x object of class boot_mean_cor_diff
+#' @param x object of class bootstrap_r_squared_change
 #' @param digits positive intenger: number of decimal points to display. Numbers are passed to round(x, digits)
 #' @param ... further arguments passed to or from other methods (not currently used)
 #' @method print bootstrap_r_squared_change
 #' @export 
 #' @examples
 #' data(facets_data); data(facets_meta)
-#' # using 100 iterations is too few, but is used here to make example run quickly
-#' fit <- bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=100)
+#' # using 50 iterations is too few, but is used here to make example run quickly
+#' fit <- bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=50)
 #' print(fit, verbose=TRUE)
 print.bootstrap_r_squared_change <- function(x, digits=3, ...) {
     cat('\nBOOTSTRAP ESTIMATE OF POPULATION R-SQUARED CHANGE\n')

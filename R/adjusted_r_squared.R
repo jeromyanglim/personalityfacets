@@ -1,6 +1,6 @@
-#' @title Calculate adjusted r square
+#' @title Calculate adjusted r-squared
 #' 
-#' @description Calculates adjusted r square using various methods. 
+#' @description Calculates adjusted r-squared using various methods. 
 #' \code{ezekiel} is the formula typically used in statistics packages (e.g., adj.r.squared in summary.lm).
 #' One recommendation is to use \code{olkinpratt} when the predictors are assumed to be random and \code{ezekiel} when predictors are assumed to be fixed.
 #' All included formulas are designed to estimate population \eqn{\rho^2} r-squared rather
@@ -66,7 +66,7 @@ adjusted_r_squared <- function(rsquared, n, p,
     
 }
 
-#' @title Calculate adjusted r squared
+#' @title Calculate adjusted r squared using lm object
 #' 
 #' @description This function is an alternative way of calling \link{adjusted_r_squared}. It derives
 #' \code{n}, \code{p}, and \code{rsquared} from an \code{lm} object. 
