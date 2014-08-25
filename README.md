@@ -31,9 +31,9 @@ Jeromy Anglim
 License: GPL-2
 
 ### References
-For further infomration about the approach, see the following reference:
+For further infomration about the approach, the following reference is currently under review and will provide further details:
 
-Anglim, J., Grant, S. Estimating Incremental Criterion Prediction of Personality Facets over Factors. http://dx.doi.org/10.6084/m9.figshare.917189
+Anglim, J., & Grant, S. Incremental Criterion Prediction of Personality Facets over Factors: Obtaining Unbiased Estimates and Confidence Intervals. Manuscript under review.
 
 If you use this package as part of a publication, please cite the above reference.
 
