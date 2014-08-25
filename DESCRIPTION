@@ -3,11 +3,15 @@ Type: Package
 Title: Package for estimating population r-square change
 Version: 0.2
 Date: 2014-08-25
-Author: Jeromy Anglim <jkanglim@gmail.com>
-Maintainer: Jeromy Anglim <jkanglim@gmail.com>
-Description: Package for providing a bootstrap estimate of population r-squared change
+Author: Jeromy Anglim <jeromy.anglim@deakin.edu.au>
+Maintainer: Jeromy Anglim <jeromy.anglim@deakin.edu.au>
+Description: Methods and tools related to estimating population r-squared change
+             including bootstrap confidence intervals, various adjusted r-squared
+             estimators, and follow-up tests.
 Depends:
     boot,
     bootstrap,
     hypergeo
-License: GPL-2
+BugReports: https://github.com/jeromyanglim/personalityfacets/issues
+License: GPL (>= 2)
+URL: https://github.com/jeromyanglim/personalityfacets

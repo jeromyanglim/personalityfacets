@@ -21,7 +21,7 @@ Print output including descriptive statistics and bootstrap results.
 data(facets_data); data(facets_meta)
 
 ## Using 50 iterations is too few, but is used here to
-## make example run quickly.
+## make the example run quickly.
 
 ##  Save object
 fit <- bootstrap_r_squared_change(facets_data,

@@ -23,14 +23,31 @@ The order of predictors corresponds to the order that they entered the model.
 This function performs forward entry stepwise regression.
 }
 \details{
-The model starts with no predictors and determines which remaining predictor
-(which on the first iteration is all predictors) has the largest squared semi-partial correlation.
+The model starts with no predictors and determines which predictor results
+in the largest increase to r-squared. If this predictor has a p-value less than \code{alpha_in}
+then the predictor is retained. If not then the predictor is excluded and the process stops.
+
+Then all remaining predictors are examined. The predictor with the largest squared semi-partial correlation
+adjusting for predictors already in the model is further examined.
 If this predictor has a p-value less than \code{alpha_in} (e.g., .05) then the predictor is retained.
 If it is not significant, then the stepwise procedure ends and the model is returned.
-If it is significant, thent the procedure is iterated again until either there are no more excluded predictors.
+If it is significant, thent the procedure is iterated again.
+
+Note that this function is included mostly for comparion purposes.
+We do not advocate the use of stepwise regression for the purpose
+of evaluating the incremental prediction of facets over factors.
 }
 \examples{
 data(facets_data); data(facets_meta)
-stepwise_regression('swl', facets_meta$ipip_facets, facets_data, .05)
+
+## Example with the Big 5 as predictors:
+stepwise_regression('swl', c("ipip_neuroticism", "ipip_extraversion",
+     "ipip_openness", "ipip_agreeableness", "ipip_conscientiousness"),
+     facets_data, alpha_in=.05)
+
+## Example using 30 facets as predictors
+## (illustrating a more stringent alpha_in):
+stepwise_regression('swl', facets_meta$ipip_facets,
+     facets_data, alpha_in=.001)
 }
 

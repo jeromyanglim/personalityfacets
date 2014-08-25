@@ -16,13 +16,26 @@ data(facets_meta)
 }
 \description{
 Writing out the full list of facet variable names can be tedious.
-Thus, it is often useful to store frequently used sets of variables as elements in a named list.
-This object stores these lists of names as elements in a list.
+Thus, it is often useful to store frequently used sets of variables
+as elements in a named list.
+This object stores these lists of names as elements in a list so that
+they can be easily used in relevant functions such as \code{\link{regression}}
+and \code{\link{bootstrap_r_squared_change}}.
 }
 \examples{
+## Load the data from the package:
 data(facets_meta)
+
+## Print all the vectors of names:
+facets_meta
+
+## Print all facet then factor names:
 facets_meta$ipip_facets
 facets_meta$ipip_factors
+
+## These lists can then be used in relevant functions:
+data(facets_data)
+summary(regression('swl', facets_meta$ipip_facets, data=facets_data))
 }
 \keyword{data}
 

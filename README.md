@@ -15,12 +15,12 @@ Then install the `personalityfacets` package:
     library(devtools)
     install_github('personalityfacets', username='jeromyanglim')
 
-Once installed run the following command to load the package
+Once installed run the following command to load the package:
 
     library(personalityfacets)
 
 ### Getting Started
-Enter the following command to see an introduction to the main functions.
+Enter the following command to see an introduction to the main functions:
 
     ?personalityfacets
 
@@ -36,4 +36,3 @@ For further infomration about the approach, the following reference is currently
 Anglim, J., & Grant, S. Incremental Criterion Prediction of Personality Facets over Factors: Obtaining Unbiased Estimates and Confidence Intervals. Manuscript under review.
 
 If you use this package as part of a publication, please cite the above reference.
-

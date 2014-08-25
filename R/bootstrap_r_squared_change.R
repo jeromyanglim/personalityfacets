@@ -40,6 +40,12 @@
 #' Confidence intervals are based on sample quantiles. 
 #' For example, .95 ci corresponds to .025 and .975 quantiles of the bootstrap
 #' sample estimates.
+#' 
+#' For simplicity and consistency this function does not currently permit missing data. 
+#' A simple option
+#' to exclude missing data is to apply \code{\link{na.omit}} on the data frame. 
+#' Alternatively, various data imputation approaches could be adopted.
+#' 
 #' @seealso \code{link{print.bootstrap_r_squared_change}}
 #' 
 #' @examples
@@ -85,13 +91,22 @@ bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000,
                                        ci=.95, method='olkinpratt') {
     results <- list()
     data <- data[,c(ivs1, ivs2, dv)]
+    has_missingdata <-  as.logical(sum(is.na(data)) > 0)
+    if (has_missingdata) {
+        stop("data[,c(ivs1, ivs2, dv)] includes missing data; 
+bootstrap_r_squared_change does not permit missing data.") 
+    }
+    
     results$data <- data
+    
+    # Run bootstrapping
     results$theta_hats <- sapply_pb(seq(iterations), function(X) 
         double_adjusted_r_squared_change(
             data[ sample(seq(nrow(results$data)), size=nrow(data), replace=TRUE), ], 
             dv, ivs1, ivs2, method=method))
+    
     results$bootstrap_standard_error <- sd(results$theta_hats)/sqrt(iterations)
-    results$sample_theta_hat <- adjusted_r_squared_change(data, dv, ivs1, ivs2)
+    results$sample_theta_hat <- adjusted_r_squared_change(data, dv, ivs1, ivs2, method=method)
     results$ci_level <- ci
     results$ci_values <-  quantile(results$theta_hats, c((1-ci) / 2, 1 - (1-ci)/2))
     results$se <- sd(results$theta_hats)
@@ -146,7 +161,7 @@ sapply_pb <- function(X, FUN, ...)
 #' data(facets_data); data(facets_meta)
 #' 
 #' ## Using 50 iterations is too few, but is used here to 
-#' ## make example run quickly.
+#' ## make the example run quickly.
 #' 
 #' ##  Save object
 #' fit <- bootstrap_r_squared_change(facets_data, 

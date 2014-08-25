@@ -54,6 +54,11 @@ We provide the following rough guide for choosing the number of iterations:
 Confidence intervals are based on sample quantiles.
 For example, .95 ci corresponds to .025 and .975 quantiles of the bootstrap
 sample estimates.
+
+For simplicity and consistency this function does not currently permit missing data.
+A simple option
+to exclude missing data is to apply \code{\link{na.omit}} on the data frame.
+Alternatively, various data imputation approaches could be adopted.
 }
 \examples{
 ## Load data and meta data:
