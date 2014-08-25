@@ -8,7 +8,7 @@
 #' 
 #' \link{bootstrap_r_squared_change} can be used to obtain bootstrap confidence intervals on the
 #' population r-squared change. There are also various support functions. \link{regression} 
-#' is a convient way of calling a regression with many predictors. \link{adjusted_r_squared} 
+#' is a convenient way of calling a regression with many predictors. \link{adjusted_r_squared} 
 #' and \link{lm_adjusted_r_squared} provides several options for obtaining adjusted r-squared.
 #' 
 #' \link{facets_semi_partial_r_table} decomposes the relationship between a set of facets and a criterion.

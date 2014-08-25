@@ -26,25 +26,3 @@ double_adjusted_r_squared_change <- function(data, dv, ivs1, ivs2, method='ezeki
 }
 
 
-post_adjusted_r_squared_change <- function(data, dv) {
-    fit_facets <- regression(dv, v$ipip_facets, data)
-    ars_facets <- summary(fit_facets)$r.squared
-    fit_factors <- regression(dv, v$ipip_factors, data)
-    ars_factors <- summary(fit_factors)$r.squared
-    r_squared_diff <- ars_facets - ars_factors
-    p_diff <-  length(coef(fit_facets)) - length(coef(fit_factors))
-    n <- nrow(data)
-    adjusted_r_squared(r_squared_diff, n, p_diff)
-    # c(ars_facets, ars_factors, ars_facets - ars_factors)
-}
-
-simple_r_squared_change <- function(data, dv) {
-    fit_facets <- regression(dv, v$ipip_facets, data)
-    ars_facets <- summary(fit_facets)$r.squared
-    fit_factors <- regression(dv, v$ipip_factors, data)
-    ars_factors <- summary(fit_factors)$r.squared
-    ars_facets - ars_factors
-    # c(ars_facets, ars_factors, ars_facets - ars_factors)
-}
-
-

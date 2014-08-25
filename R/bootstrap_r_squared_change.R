@@ -1,6 +1,7 @@
-#' @title Bootstrap estimate of popualtion r-square of difference between facets and factors
+#' @title Bootstrap estimate of popualtion r-squared change 
 #' 
-#' @description The function provides a bootstrapped estimate with confidence intervals of population r-squared change. 
+#' @description The function provides a bootstrapped estimate with confidence intervals 
+#' of population r-squared change. 
 #' 
 #' @param data data.frame
 #' @param dv character scalar with name of dependent variable
@@ -14,28 +15,74 @@
 #' where the predictor variables are assumed to be random.
 #' 
 #' @return 
-#' an object of class boot_mean_cor_diff
+#' an object of class \code{bootstrap_r_squared_change}.
 #' 
 #' 
 #' \item{variables, data, iterations, ci, method}{copy of corresponding arguments}
 #' @export
 #' @details
-#' Population r-square change is defined as
+#' Population r-squared change is defined as
 #' \deqn{\Delta\rho^2 = \rho^2_{ivs2} - \rho^2_{ivs1}}
 #' The Bootstrapping procedure applies the formula for adjusted r-squared twice, 
-#' once to remove the bootstrap bias, and a second time to remove the bias inherent to the r-squared formula.
-#' There are several methods available (See \code{method} argument for the \link{adjusted_r_squared} function). 
-#' However, in general if you assume that the predictors are random then \code{olkinpratt} is a good option.
-#' If you assume that the predictors are fixed, then \code{ezekiel} is a good option. 
+#' once to remove the bootstrap bias, and a second time to remove the bias inherent to 
+#' the r-squared formula.
+#' There are several methods available (See the \code{method} argument for the 
+#' \code{\link{adjusted_r_squared}} function). 
+#' However, in general if you assume that the predictors are random 
+#' then \code{"olkinpratt"} is a good option.
+#' If you assume that the predictors are fixed, then \code{"ezekiel"} is a good option. 
 #' However, generally the results are fairly similar for the two methods
-#' A rough guide to number of iterations: 100 for basic error checking; 1,000 for exploratory analyses; 
-#' 10,000 is recommended for publication.
+#' We provide the following rough guide for choosing the number of iterations: 
+#' 100 for basic error checking; 
+#' 1,000 for exploratory analyses; 
+#' 10,000 or more is recommended for publication.
+#' 
+#' Confidence intervals are based on sample quantiles. 
+#' For example, .95 ci corresponds to .025 and .975 quantiles of the bootstrap
+#' sample estimates.
+#' @seealso \code{link{print.bootstrap_r_squared_change}}
 #' 
 #' @examples
+#' ## Load data and meta data:
 #' data(facets_data); data(facets_meta)
-#' # using 50 iterations is too few, but is used here to make example run quickly
-#' bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=50)
-bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000, ci=.95, method='olkinpratt') {
+#' 
+#' ## Using 50 iterations is too few, but is used here to 
+#' ##     make example run quickly.
+#' 
+#' ## This version explicitly states the variables:
+#' bootstrap_r_squared_change(facets_data, "swl", 
+#'     c("ipip_neuroticism", "ipip_extraversion", 
+#'       "ipip_openness", "ipip_agreeableness", "ipip_conscientiousness"),
+#'     c("ipip_n_anxiety", "ipip_n_anger", 
+#'        "ipip_n_depression", "ipip_n_self_consciousness", 
+#'       "ipip_n_immoderation", "ipip_n_vulnerability", 
+#'       "ipip_e_friendliness", "ipip_e_gregariousness", 
+#'       "ipip_e_assertiveness", "ipip_e_activity_level", 
+#'       "ipip_e_excitement_seeking", "ipip_e_cheerfulness", 
+#'       "ipip_o_imagination", "ipip_o_artistic_interests", 
+#'       "ipip_o_emotionality", "ipip_o_adventurousness", 
+#'       "ipip_o_intellect", "ipip_o_liberalism", 
+#'       "ipip_a_trust", "ipip_a_morality", 
+#'       "ipip_a_altruism", "ipip_a_cooperation", 
+#'       "ipip_a_modesty", "ipip_a_sympathy", 
+#'       "ipip_c_self_efficacy", "ipip_c_orderliness", 
+#'       "ipip_c_dutifulness", "ipip_c_achievement_striving", 
+#'       "ipip_c_self_discipline", "ipip_c_cautiousness"),
+#'      iterations=50)
+#'     
+#' ## Alternatively, it is often clearer to store the variables 
+#' ##      in character vectors.
+#' ## For example:
+#' facets_meta
+#' 
+#' ## These can be applied as follows:
+#' bootstrap_r_squared_change(facets_data, facets_meta$swb[1], 
+#'                            facets_meta$ipip_factors, 
+#'                            facets_meta$ipip_facets, 
+#'                            iterations=50)
+#' 
+bootstrap_r_squared_change <- function(data, dv, ivs1, ivs2, iterations=1000, 
+                                       ci=.95, method='olkinpratt') {
     results <- list()
     data <- data[,c(ivs1, ivs2, dv)]
     results$data <- data
@@ -86,18 +133,40 @@ sapply_pb <- function(X, FUN, ...)
 
 #' @title Print output for bootstrap_r_squared_change object
 #' 
-#' @description Print output including descriptive statistics and bootstrap results
+#' @description Print output including descriptive statistics and bootstrap results.
 #' 
 #' @param x object of class bootstrap_r_squared_change
-#' @param digits positive intenger: number of decimal points to display. Numbers are passed to round(x, digits)
+#' @param digits positive intenger: number of decimal points to display. 
+#'        Numbers are passed to \code{round(x, digits)}
 #' @param ... further arguments passed to or from other methods (not currently used)
 #' @method print bootstrap_r_squared_change
 #' @export 
 #' @examples
+#' ## Load data and meta data:
 #' data(facets_data); data(facets_meta)
-#' # using 50 iterations is too few, but is used here to make example run quickly
-#' fit <- bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=50)
-#' print(fit, verbose=TRUE)
+#' 
+#' ## Using 50 iterations is too few, but is used here to 
+#' ## make example run quickly.
+#' 
+#' ##  Save object
+#' fit <- bootstrap_r_squared_change(facets_data, 
+#'              facets_meta$swb[1], 
+#'              facets_meta$ipip_factors, 
+#'              facets_meta$ipip_facets, 
+#'              iterations=50)
+#' ## print object
+#' print(fit)
+#' 
+#' ## Alternatively, the object fit object can be explored directly:
+#' 
+#' ## Show density plot of bootstrapped estimates of rho-squared change.
+#' plot(density(fit$theta_hats), 
+#'      xlab="rho-squared change",
+#'      main="Density of bootstrap estimates")
+#' 
+#' ## Extract the confidence interval values
+#' fit$ci_values
+#' 
 print.bootstrap_r_squared_change <- function(x, digits=3, ...) {
     cat('\nBOOTSTRAP ESTIMATE OF POPULATION R-SQUARED CHANGE\n')
     

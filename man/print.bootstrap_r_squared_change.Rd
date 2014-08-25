@@ -6,19 +6,40 @@
 \method{print}{bootstrap_r_squared_change}(x, digits = 3, ...)
 }
 \arguments{
-\item{x}{object of class boot_mean_cor_diff}
+\item{x}{object of class bootstrap_r_squared_change}
 
-\item{digits}{positive intenger: number of decimal points to display. Numbers are passed to round(x, digits)}
+\item{digits}{positive intenger: number of decimal points to display.
+Numbers are passed to \code{round(x, digits)}}
 
 \item{...}{further arguments passed to or from other methods (not currently used)}
 }
 \description{
-Print output including descriptive statistics and bootstrap results
+Print output including descriptive statistics and bootstrap results.
 }
 \examples{
+## Load data and meta data:
 data(facets_data); data(facets_meta)
-# using 50 iterations is too few, but is used here to make example run quickly
-fit <- bootstrap_r_squared_change(facets_data, facets_meta$swb[1], facets_meta$ipip_factors, facets_meta$ipip_facets, iterations=50)
-print(fit, verbose=TRUE)
+
+## Using 50 iterations is too few, but is used here to
+## make example run quickly.
+
+##  Save object
+fit <- bootstrap_r_squared_change(facets_data,
+             facets_meta$swb[1],
+             facets_meta$ipip_factors,
+             facets_meta$ipip_facets,
+             iterations=50)
+## print object
+print(fit)
+
+## Alternatively, the object fit object can be explored directly:
+
+## Show density plot of bootstrapped estimates of rho-squared change.
+plot(density(fit$theta_hats),
+     xlab="rho-squared change",
+     main="Density of bootstrap estimates")
+
+## Extract the confidence interval values
+fit$ci_values
 }
 

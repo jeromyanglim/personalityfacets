@@ -62,5 +62,11 @@ The dataset includes 337 participants. The personality scales are based on the I
 scales modelled on the NEO-PI. Thus, there are scales for the Big 5 along with six facets for each
 of the factors. There are also several well-being variablesli
 }
+\references{
+Anglim, J., & Grant, S. (2014).
+Predicting Psychological and Subjective Well-Being from Personality:
+Incremental Prediction from 30 Facets over the Big 5.
+Manuscript Submitted for Publication.
+}
 \keyword{data}
 
