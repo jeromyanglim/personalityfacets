@@ -13,7 +13,9 @@
 #' Thus, factor names should repeat and correspond to the factor for the facet 
 #' in the corresponding position in facets.
 #' @param data data.frame
-#' @return Data frame of correlations
+#' @param return_pvalue logical indicating whether to return p-values associated with each correlation
+#' @return By default a data frame of correlations is return. If \code{return_pvalue} is true then a list
+#' of two data frames is returned one with the correlations and the other with the pvalues.
 #' \enumerate{
 #' \item \code{r_zero_order}: zero order corelation
 #' \item \code{sr_focal_factor}: semi-partial correlation controlling only for focal factor
@@ -36,7 +38,18 @@
 #'     facets_meta$ipip_facets, 
 #'     rep(facets_meta$ipip_factors, each=6), 
 #'     facets_data)
-facets_semi_partial_r_table <- function(dv, facets, factors, data) {
+#'     
+#' ## Return p-values
+#' x <- facets_semi_partial_r_table('swl', 
+#'                                  facets_meta$ipip_facets, 
+#'                                 rep(facets_meta$ipip_factors, each=6), 
+#'                                facets_data, return_pvalue=TRUE)
+#'
+# Indicate significant correlations based on alpha
+#'alpha <- .001
+#'cbind(x$p[,1:2], ifelse(x$p[,3:6]<alpha, "*", ""))
+#'
+facets_semi_partial_r_table <- function(dv, facets, factors, data, return_pvalue=FALSE ) {
     if ( length(facets) != length(factors)) {
         stop("The length of facet variables should be the same as the length of factors")
     }
@@ -50,10 +63,27 @@ facets_semi_partial_r_table <- function(dv, facets, factors, data) {
         unlist(results)
     }
 
-    all_correlations(facets[1], factors[1])
+    all_p  <- function(facet, focal_factor) {
+        results <- list()
+        results$r_zero_order <- cor.test(as.vector(data[,dv]), as.vector(data[,facet]))$p.value
+        results$sr_focal_factor <- semi_partial_r(dv, facet, focal_factor, data, return_pvalue = TRUE)$p
+        results$sr_all_factors <- semi_partial_r(dv, facet, factors, data, return_pvalue = TRUE)$p
+        results$sr_other_facets <- semi_partial_r(dv, facet, setdiff(facets, facet),data, return_pvalue = TRUE)$p
+        unlist(results)
+    }
+    
     
     allsemi <- t(sapply(seq(facets), function(i)  all_correlations(facets[i], factors[i])))
     allsemi <- data.frame(allsemi)
     allsemi <- cbind(factor=factors, facet=facets, allsemi)
+    
+    allp <- t(sapply(seq(facets), function(i)  all_p(facets[i], factors[i])))
+    allp <- data.frame(allp)
+    allp <- cbind(factor=factors, facet=facets, allp)
+    
+    
+    if (return_pvalue) {
+        return( list(semir=allsemi, p=allp) )    
+    }
     allsemi
 }

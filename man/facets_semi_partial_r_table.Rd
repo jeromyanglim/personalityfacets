@@ -3,7 +3,7 @@
 \alias{facets_semi_partial_r_table}
 \title{Semi-partial correlations between facets and criterion}
 \usage{
-facets_semi_partial_r_table(dv, facets, factors, data)
+facets_semi_partial_r_table(dv, facets, factors, data, return_pvalue = FALSE)
 }
 \arguments{
 \item{dv}{character string of the criterion variable name in \code{data}}
@@ -16,9 +16,12 @@ Thus, factor names should repeat and correspond to the factor for the facet
 in the corresponding position in facets.}
 
 \item{data}{data.frame}
+
+\item{return_pvalue}{logical indicating whether to return p-values associated with each correlation}
 }
 \value{
-Data frame of correlations
+By default a data frame of correlations is return. If \code{return_pvalue} is true then a list
+of two data frames is returned one with the correlations and the other with the pvalues.
 \enumerate{
 \item \code{r_zero_order}: zero order corelation
 \item \code{sr_focal_factor}: semi-partial correlation controlling only for focal factor
@@ -50,5 +53,14 @@ facets_semi_partial_r_table('swl',
     facets_meta$ipip_facets,
     rep(facets_meta$ipip_factors, each=6),
     facets_data)
+
+## Return p-values
+x <- facets_semi_partial_r_table('swl',
+                                 facets_meta$ipip_facets,
+                                rep(facets_meta$ipip_factors, each=6),
+                               facets_data, return_pvalue=TRUE)
+
+alpha <- .001
+cbind(x$p[,1:2], ifelse(x$p[,3:6]<alpha, "*", ""))
 }
 

@@ -3,7 +3,7 @@
 \alias{semi_partial_r}
 \title{Semi partial correlation}
 \usage{
-semi_partial_r(y, x, controls, data)
+semi_partial_r(y, x, controls, data, return_pvalue = FALSE)
 }
 \arguments{
 \item{y}{character string of name of outcome variable in \code{data}}
@@ -13,6 +13,8 @@ semi_partial_r(y, x, controls, data)
 \item{controls}{character vector of one or more names of control variables in \code{data}}
 
 \item{data}{data.frame}
+
+\item{return_pvalue}{logical indicating whether to return two tailed p-value of semi-partial correlation}
 }
 \description{
 Semi-partial correlation between variables x and y,
