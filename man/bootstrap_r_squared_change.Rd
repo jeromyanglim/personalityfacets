@@ -100,6 +100,6 @@ bootstrap_r_squared_change(facets_data, facets_meta$swb[1],
                            iterations=50)
 }
 \seealso{
-\code{link{print.bootstrap_r_squared_change}}
+\code{\link{print.bootstrap_r_squared_change}}
 }
 

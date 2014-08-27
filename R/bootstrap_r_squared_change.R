@@ -46,7 +46,7 @@
 #' to exclude missing data is to apply \code{\link{na.omit}} on the data frame. 
 #' Alternatively, various data imputation approaches could be adopted.
 #' 
-#' @seealso \code{link{print.bootstrap_r_squared_change}}
+#' @seealso \code{\link{print.bootstrap_r_squared_change}}
 #' 
 #' @examples
 #' ## Load data and meta data:
