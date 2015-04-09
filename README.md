@@ -37,6 +37,7 @@ Anglim, J., & Grant, S. Incremental Criterion Prediction of Personality Facets o
 
 If you use this package as part of a publication, please cite the above reference.
 
+
 ### Applications
 
 * Anglim, J., & Grant, S. (2014). Predicting Psychological and Subjective Well-Being from Personality: Incremental Prediction from 30 Facets Over the Big 5. Journal of Happiness Studies. http://dx.doi.org/10.1007/s10902-014-9583-7
