@@ -13,7 +13,7 @@ If they are not already installed, install the package dependencies:
 Then install the `personalityfacets` package:
 
     library(devtools)
-    install_github('install_github('jeromyanglim/personalityfacets')
+    install_github('jeromyanglim/personalityfacets')
 
 Once installed run the following command to load the package:
 
